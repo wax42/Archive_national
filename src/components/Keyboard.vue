@@ -1,45 +1,45 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-    </ul>
+    <input type="text" placeholder="Text input" @focus="show" data-layout="normal" />
+    <vue-touch-keyboard v-if="visible", :layout="layout", :cancel="hide", :accept="accept", :input="input" />
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import VueTouchKeyboard from "vue-touch-keyboard";
+import style from "vue-touch-keyboard/dist/vue-touch-keyboard.css"; // load default style
+Vue.use(VueTouchKeyboard);
 export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+    data () {
+      return {
+        visible: false,
+        layout: "normal",
+        options: {
+          useKbEvents: false,
+          preventClickEvent: false
+        }
+      }
+    },
+
+    methods: {
+        accept(text) {
+          alert("Input text: " + text);
+          this.hide();
+        },
+
+        show(e) {
+          this.input = e.target;
+          print(this.input)
+          this.layout = e.target.dataset.layout;
+
+          if (!this.visible)
+            this.visible = true
+        },
+
+        hide() {
+          this.visible = false;
+        }
     }
   }
-}
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
